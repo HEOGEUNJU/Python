@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script >
+	var arr = ["홍길동","전우치","이순신"]
+	arr.remove("이순신");
+
+</script>
+</head>
+<body>
+	
+</body>
+</html>

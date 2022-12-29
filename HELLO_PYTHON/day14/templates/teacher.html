@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+	function fn_list(){
+		var postdata = {
+				'id':'1'
+		};
+		$.ajax({
+			type: 'POST',
+			url: 'teacher_list_ajax',
+			data: JSON.stringify(postdata),
+			dataType : 'JSON',
+			contentType: "application/json",
+			success: function(data){
+// 				console.log(data.list[0]);
+				
+				var list = data.list;
+				var html = "";
+				
+				for (var i=0; i <list.length; i++){
+// 					html+="<tr>";
+// 					html+="	  <td>"+list[i].addr+"</td>";
+// 					html+="	  <td>"+list[i].t_id+"</td>";
+// 					html+="	  <td>"+list[i].t_name+"</td>";
+// 					html+="	  <td>"+list[i].mobile+"</td>";
+// 					html+="</tr>";
+					
+					/* f String 사용법 */
+					html += `
+					<tr>
+						<td><a href="javascript:fn_one('${list[i].t_id}')">${list[i].t_id}</a></td>
+						<td>${list[i].t_name}</td>
+						<td>${list[i].mobile}</td>
+						<td>${list[i].addr}</td>
+					</tr>
+					`;
+				}
+				list.sort();
+				var obj = document.querySelector("#my_tbody");
+				obj.innerHTML = html;
+			},
+			error: function(request, status, error){
+				console.log(error);
+			}
+		});
+	}
+	
+	function fn_one(t_id){
+		axios.post('/ajax_teacher_one',{
+			t_id:t_id
+			
+		})
+		.then(function(res){
+			var teacher 	= res.data.teacher;
+			var obj_t_id	=document.querySelector("#t_id");
+			var obj_t_name	=document.querySelector("#t_name");
+			var obj_mobile	=document.querySelector("#mobile");
+			var obj_addr	=document.querySelector("#addr");
+			
+			obj_t_id.value 	 = teacher.t_id;
+			obj_t_name.value = teacher.t_name;
+			obj_mobile.value = teacher.mobile;
+			obj_addr.value 	 = teacher.addr;
+		});
+		
+	}
+	
+	function fn_add(){
+		var obj_t_id	=document.querySelector("#t_id");
+		var obj_t_name	=document.querySelector("#t_name");
+		var obj_mobile	=document.querySelector("#mobile");
+		var obj_addr	=document.querySelector("#addr");
+		var param = {
+			't_id'	: obj_t_id.value,
+			't_name': obj_t_name.value,
+			'mobile': obj_mobile.value,
+			'addr'	: obj_addr.value
+		};
+		
+		axios.post('/ajax_teacher_add',param)		
+		.then(function(res){
+			console.log(res);
+			var cnt = res.data.cnt;
+			if(cnt==1){
+				alert("데이터가 정상적으로 입력되었습니다.")
+				fn_list();
+				obj_t_id.value	 = "";
+				obj_t_name.value = "";
+				obj_mobile.value = "";
+				obj_addr.value	 = "";
+			}else{
+				alert("추가 중 문제가 생겼습니다.")
+				
+			}
+		});
+	}
+		
+	function fn_update(){
+		var obj_t_id	=document.querySelector("#t_id");
+		var obj_t_name	=document.querySelector("#t_name");
+		var obj_mobile	=document.querySelector("#mobile");
+		var obj_addr	=document.querySelector("#addr");
+		
+		var param = {
+			't_id'	: obj_t_id.value,
+			't_name': obj_t_name.value,
+			'mobile': obj_mobile.value,
+			'addr'	: obj_addr.value
+		};
+		
+		axios.post('/ajax_teacher_update',param)
+		.then(function(res){
+			console.log(res);
+			var cnt = res.data.cnt;
+			if(cnt==1){
+				alert("데이터가 정상적으로 수정되었습니다.")
+				fn_list();
+				obj_t_id.value 	 = "";
+				obj_t_name.value = "";
+				obj_mobile.value = "";
+				obj_addr.value 	 = "";
+			}else{
+				alert("추가 중 문제가 생겼습니다.")
+			}
+		});
+	}
+		
+	function fn_delete(obj_t_id){
+		var obj_t_id	=document.querySelector("#t_id");
+		var obj_t_name	=document.querySelector("#t_name");
+		var obj_mobile	=document.querySelector("#mobile");
+		var obj_addr	=document.querySelector("#addr");
+		
+		var param = {	
+			't_id'	: obj_t_id.value
+		};
+		
+		if(confirm("정말 삭제하시겠습니까?")){
+			axios.post('/ajax_teacher_delete',param)
+			.then(function(res){
+				console.log(res);
+				var cnt = res.data.cnt;
+				if(cnt==1){
+						alert("데이터가 정상적으로 삭제되었습니다.")
+						fn_list();
+						obj_t_id.value 	 = "";
+						obj_t_name.value = "";
+						obj_mobile.value = "";
+						obj_addr.value 	 = "";
+				}else{
+					alert("추가 중 문제가 생겼습니다.")
+					
+				}
+			
+			});
+		}else{
+			alert("삭제가 취소되었습니다.")
+			fn_list();
+			obj_t_id.value 	 = "";
+			obj_t_name.value = "";
+			obj_mobile.value = "";
+			obj_addr.value 	 = "";
+		}
+		
+	}
+		
+
+</script>
+</head>
+<body onload="fn_list()">
+
+	<table border="1px">
+		<thead>
+			<tr>
+				<td>사번</td>
+				<td>이름</td>
+				<td>전화번호</td>
+				<td>주소</td>
+			</tr>
+		</thead>
+		<tbody id="my_tbody">
+			<tr>
+				<td colspan="4">검색된 데이터가 없습니다.</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<table border="1px">
+		<tr>
+			<td>사번</td>
+			<td>
+				<input type="text" id ="t_id" value=""/>
+			</td>
+		</tr>
+		<tr>
+			<td>이름</td>
+			<td>
+				<input type="text" id ="t_name"/>
+			</td>
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td>
+				<input type="text" id ="mobile"/>
+			</td>
+		</tr>
+		<tr>
+			<td>주소</td>
+			<td>
+				<input type="text" id ="addr"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="button" value ="추가" onclick="fn_add()"/>
+				<input type="button" value ="수정" onclick="fn_update()"/>
+				<input type="button" value ="삭제" onclick="fn_delete()"/>
+			</td>
+		</tr>
+		
+		
+	</table>
+</body>
+</html>

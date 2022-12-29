@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>three.js webgl - geometry - cube</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+      <link type="text/css" rel="stylesheet" href="main.css">
+   </head>
+   <body>
+
+      <!-- Import maps polyfill -->
+      <!-- Remove this when import maps will be widely supported -->
+      <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+      <script type="importmap">
+         {
+            "imports": {
+               "three": "../build/three.module.js",
+               "three/addons/": "./jsm/"
+            }
+         }
+      </script>
+
+      <script type="module">
+
+        import * as THREE from 'three';
+
+        let camera, scene, renderer;
+        let mesh;
+		var rightPressed = false;
+		var leftPressed = false;
+
+         init();
+         animate();
+
+         function init() {
+
+            camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+            camera.position.z = 400;
+			camera.position.y = 150;
+            console.log(camera.position);
+
+            scene = new THREE.Scene();
+
+         
+			const geometry = new THREE.CylinderGeometry( 50, 50, 10, 10 );
+			const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+			material.wireframe =true;
+			mesh = new THREE.Mesh( geometry, material );
+			scene.add( mesh );
+
+            renderer = new THREE.WebGLRenderer( { antialias: true } );
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+
+            //
+
+            window.addEventListener( 'resize', onWindowResize );
+
+         }
+
+         function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize( window.innerWidth, window.innerHeight );
+
+         }
+         var cnt = 0;
+         function animate() {
+
+            requestAnimationFrame( animate );
+            
+            //mesh.position.z += 1;
+           // mesh.rotation.z += 0.005;
+            mesh.rotation.y += 0.01;
+
+            renderer.render( scene, camera );
+            //console.log("cnt", cnt);
+            cnt++;
+         }
+		 
+		document.addEventListener("keydown", onDocumentKeyDown, false);
+	//	document.addEventListener("keyup", keyUpHandler, false);
+		// 각 방향키의 keycode와 방향이 맞다면, 해당 변수들 true 
+		function onDocumentKeyDown(e) {
+		
+		var key = e.key;
+			if(e.key == 37 || e.key == "ArrowRight") {
+				mesh.position.x += 10;	
+			} else if(e.key == 39 || e.key == "ArrowLeft") {
+				mesh.position.x -= 10;
+			} else if(e.key == 38 || e.key == "ArrowUp") {
+				mesh.position.z += 10;
+			} else if(e.key == 40 || e.key == "ArrowDown") {
+			   mesh.position.z -= 10;
+			}
+		};
+
+      </script>
+
+   </body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	function fn_list(){
+		var postdata = {
+				'id':'1'
+		};
+		$.ajax({
+			type: 'POST',
+			url: 'ajax',
+			data: JSON.stringify(postdata),
+			dataType : 'JSON',
+			contentType: "application/json",
+			success: function(data){
+// 				console.log(data.list[0]);
+				
+				var list = data.list;
+				var html = "";
+				
+				for (var i=0; i <list.length; i++){
+// 					html+="<tr>";
+// 					html+="	  <td>"+list[i].addr+"</td>";
+// 					html+="	  <td>"+list[i].e_id+"</td>";
+// 					html+="	  <td>"+list[i].e_name+"</td>";
+// 					html+="	  <td>"+list[i].sex+"</td>";
+// 					html+="</tr>";
+					
+					/* f String 사용법 */
+					html += `
+					<tr>
+						<td><a href="javascript:fn_one('${list[i].e_id}')">${list[i].e_id}</a></td>
+						<td>${list[i].e_name}</td>
+						<td>${list[i].sex}</td>
+						<td>${list[i].addr}</td>
+					</tr>
+					`;
+				}
+				list.sort();
+				var obj = document.querySelector("#my_tbody");
+				obj.innerHTML = html;
+			},
+			error: function(request, status, error){
+				console.log(error);
+			}
+		});
+	}
+	
+	function fn_one(e_id){
+		var param = {
+			'e_id':e_id
+		};
+		$.ajax({
+			type: 'POST',
+			url: 'ajax_one',
+			data: JSON.stringify(param),
+			dataType : 'JSON',
+			contentType: "application/json",
+			success: function(data){
+				var e = data.emp;
+				
+				var obj_e_id=document.querySelector("#e_id");
+				var obj_e_name=document.querySelector("#e_name");
+				var obj_sex=document.querySelector("#sex");
+				var obj_addr=document.querySelector("#e_addr");
+				
+				obj_e_id.value = e.e_id;
+				obj_e_name.value = e.e_name;
+				obj_sex.value = e.sex;
+				obj_addr.value = e.addr;
+			}
+		});
+		
+	}
+	
+	function fn_add(){
+		var obj_e_id=document.querySelector("#e_id");
+		var obj_e_name=document.querySelector("#e_name");
+		var obj_sex=document.querySelector("#sex");
+		var obj_addr=document.querySelector("#e_addr");
+		
+		var param = {
+				'e_id'	: obj_e_id.value,
+				'e_name': obj_e_name.value,
+				'sex'	: obj_sex.value,
+				'e_addr': obj_addr.value
+			};
+			$.ajax({
+				type: 'POST',
+				url: 'ajax_add',
+				data: JSON.stringify(param),
+				dataType : 'JSON',
+				contentType: "application/json",
+				success: function(data){
+					var cnt = data.cnt;
+					console.log(cnt);
+					if(cnt==1){
+						alert("데이터가 정상적으로 입력되었습니다.")
+						fn_list();
+						obj_e_id.value = "";
+						obj_e_name.value = "";
+						obj_sex.value = "";
+						obj_addr.value = "";
+					}else{
+						alert("추가 중 문제가 생겼습니다.")
+						
+					}
+				}
+			
+			});
+	}
+	
+	function fn_delete(obj_e_id){
+		var obj_e_id=document.querySelector("#e_id");
+		var obj_e_name=document.querySelector("#e_name");
+		var obj_sex=document.querySelector("#sex");
+		var obj_addr=document.querySelector("#e_addr");
+		
+		var param = {	
+			'e_id'	: obj_e_id.value
+			
+		};
+		
+		$.ajax({
+			type: 'POST',
+			url: 'ajax_delete',
+			data: JSON.stringify(param),
+			dataType : 'JSON',
+			contentType: "application/json",
+			success: function(data){
+				var cnt = data.cnt
+				console.log(data)
+				if(cnt==1){
+					alert("데이터가 정상적으로 삭제되었습니다.")
+					fn_list();
+					obj_e_id.value = "";
+					obj_e_name.value = "";
+					obj_sex.value = "";
+					obj_addr.value = "";
+				}else{
+					alert("추가 중 문제가 생겼습니다.")
+					
+				}
+			}
+		});
+		
+	}
+	
+	function fn_update(){
+		var obj_e_id=document.querySelector("#e_id");
+		var obj_e_name=document.querySelector("#e_name");
+		var obj_sex=document.querySelector("#sex");
+		var obj_addr=document.querySelector("#e_addr");
+		
+		var param = {
+			'e_id':obj_e_id.value,
+			'e_name': obj_e_name.value,
+			'sex'	: obj_sex.value,
+			'e_addr': obj_addr.value
+		};
+		
+		$.ajax({
+			type: 'POST',
+			url: 'ajax_update',
+			data: JSON.stringify(param),
+			dataType : 'JSON',
+			contentType: "application/json",
+			success: function(data){
+				var cnt = data.cnt
+				console.log(data)
+				if(cnt==1){
+					alert("데이터가 정상적으로 수정되었습니다.")
+					fn_list();
+					obj_e_id.value = "";
+					obj_e_name.value = "";
+					obj_sex.value = "";
+					obj_addr.value = "";
+				}else{
+					alert("추가 중 문제가 생겼습니다.")
+					
+				}
+			}
+		});
+		
+	}
+</script>
+</head>
+<body onload="fn_list()">
+
+	<table border="1px">
+		<thead>
+			<tr>
+				<td>사번</td>
+				<td>이름</td>
+				<td>성별</td>
+				<td>주소</td>
+			</tr>
+		</thead>
+		<tbody id="my_tbody">
+			<tr>
+				<td colspan="4">검색된 데이터가 없습니다.</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	
+	
+	<table border="1px">
+		<tr>
+			<td>사번</td>
+			<td>
+				<input type="text" id ="e_id" value=""/>
+			</td>
+		</tr>
+		<tr>
+			<td>이름</td>
+			<td>
+				<input type="text" id ="e_name"/>
+			</td>
+		</tr>
+		<tr>
+			<td>성별</td>
+			<td>
+				<input type="text" id ="sex"/>
+			</td>
+		</tr>
+		<tr>
+			<td>주소</td>
+			<td>
+				<input type="text" id ="e_addr"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="button" value ="추가" onclick="fn_add()"/>
+				<input type="button" value ="수정" onclick="fn_update()"/>
+				<input type="button" value ="삭제" onclick="fn_delete()"/>
+			</td>
+		</tr>
+		
+		
+	</table>
+</body>
+</html>

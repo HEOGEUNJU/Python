@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function fn_edit(){
+		var m_id = "{{mem.m_id}}";
+		location.href="mem_edit?m_id="+m_id;
+	}
+
+</script>
+</head>
+<body>
+MEM_EDIT
+<form action="mem_edit_act" method="post">
+
+<table border="1px">
+      <tr>
+         <td>사번</td>
+          <td>
+          	<input type="text" name="m_id" value="{{mem.m_id}}"/>
+          </td>
+       </tr>
+       
+        <tr>
+         <td>이름</td>
+         	<td>
+         	<input type="text" name="m_nm" value="{{mem.m_nm}}"/>
+          </td>
+       </tr>
+       
+        <tr>
+         <td>전화번호</td>
+         <td>
+         <input type="text" name="tel" value="{{mem.tel}}"/>
+          </td>
+       </tr>
+       
+        <tr>
+         <td>생년월일</td>
+         <td>
+         <input type="text" name="ymd" value="{{mem.ymd}}"/>
+          </td>
+       </tr>
+         
+      <tr>
+   	<td colspan="2">
+   	<input type="submit" value="실행"/>
+
+  
+       
+        </td>
+   
+      </tr>
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- 1. 캔버스 태그 삽입 -->
+<canvas id="p-canvas" width="1000" height="1000"></canvas>
+<script>
+	// 2. 캔버스요소 가져오기        
+    var ele_canvas = document.getElementById("p-canvas");
+    // 3. 드로잉용 컨텍스트 생성        
+    var context_canvas = ele_canvas.getContext("2d");
+    // 4. 생성한 컨텍스트를 이용해서 드로잉하기
+    context_canvas.strokeStyle = "red"; // border(선)색
+    context_canvas.lineWidth = "20";
+    context_canvas.fillStyle = "#c1c1c1"; // 면색상
+    
+    //드로잉        
+    context_canvas.rect(20, 20, 50, 100); // 도형
+    context_canvas.rect(20, 800, 50, 100); // 도형
+    context_canvas.rect(800, 20, 50, 100); // 도형
+    context_canvas.rect(800, 800, 50, 100); // 도형
+    context_canvas.stroke(); // 선        
+    context_canvas.fill(); // 면색        
+</script>
+</body>
+</html>

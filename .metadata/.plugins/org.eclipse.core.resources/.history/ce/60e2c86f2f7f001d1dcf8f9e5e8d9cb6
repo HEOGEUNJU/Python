@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script >
+	var arr = ["홍길동","전우치","이순신"]
+	arr.splice(0)
+	console.log(arr)
+
+</script>
+</head>
+<body>
+	
+</body>
+</html>

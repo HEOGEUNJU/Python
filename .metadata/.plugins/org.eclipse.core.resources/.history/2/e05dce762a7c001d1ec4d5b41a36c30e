@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
+cosole.log(regex.test("한글"))
+
+</script> 
+캔버스 객체 이용해서 만들어오기
+-----------------------------------
+ㅇ			ㅇ
+	  ㅁ	
+ㅇ			ㅇ
+
+<canvas id="p-canvas" width="300" height="300"></canvas>
+	<script>
+		// 2. 캔버스요소 가져오기        
+		var ele_canvas = document.getElementById("p-canvas");
+		// 3. 드로잉용 컨텍스트 생성        
+		var context_canvas = ele_canvas.getContext("2d");
+		// 4. 생성한 컨텍스트를 이용해서 드로잉하기
+		context_canvas.fillStyle = "#cc0000"; // 색상
+		context_canvas.fillRect(0, 0, 300, 300); // 도형
+	</script>
+</body>
+</html>

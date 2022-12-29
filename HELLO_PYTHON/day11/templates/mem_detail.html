@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function fn_edit(){
+		var m_id = "{{mem.m_id}}";
+		location.href="mem_edit?m_id="+m_id;
+	}
+	function fn_del(){
+		var flag = confirm("한번 삭제된 데이터는 삭제불가 합니다.\n진짜 삭제하겠습니까?");
+		if(!flag) {
+			return;
+		}
+		document.frm.submit();
+	}
+	
+
+</script>
+</head>
+<body>
+MEM_DETAIL
+<form action="mem_del_act" name="frm" method="post">
+	<input type="hidden" name="m_id" value="{{mem.m_id}}"/>
+</form>
+
+<table border="1px">
+      <tr>
+         <td>사번</td>
+          <td>{{mem.m_id}}</a></td>
+       </tr>
+       
+        <tr>
+         <td>이름</td>
+           <td>{{mem.m_nm}}</td></td>
+       </tr>
+       
+        <tr>
+         <td>전화번호</td>
+          <td>{{mem.tel}}</td></td>
+       </tr>
+       
+        <tr>
+         <td>생년월일</td>
+         <td>{{mem.ymd}}</td></td>
+       </tr>
+         
+      <tr>
+   	<td colspan="2">
+   	<input type="button" value="수정" onclick="fn_edit()"/>     
+   	<input type="button" value="삭제" onclick="fn_del()"/>     
+       
+        </td>
+   
+      </tr>
+</table>
+</body>
+</html>

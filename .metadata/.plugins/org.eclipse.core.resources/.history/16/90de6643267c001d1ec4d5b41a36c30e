@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+	<script type="text/javascript">
+		var sock;
+		function fn_init(){
+            sock = io.connect('http://192.168.35.25:9999');
+            sock.on('connect', function(){
+                console.log("i connect");
+            });
+
+            sock.on('message', function(msg){
+            	var info = msg.message;
+                var infos = info.split(":");
+                console.log(infos);
+                if(infos[0]=="ready"){
+                	rv_ready(infos[1]);
+                }
+                if(infos[0]=="isdone"){
+                	rv_isdone(infos[1]);
+                }
+                
+            });
+
+		}
+		
+		function rv_isdone(str_users){
+			var done = str_users.split(",");
+			users.splice(0,users.length);
+			console.log(users);
+			for(var i=0;i<done.length;i++){
+				users.push(done[i])
+			}
+			for(var i=0;i<st_names.length;i++){
+				st_names[i].innerHTML = "__";
+				st_names[i].style.backgroundColor = "green"
+				
+			}
+			for(var i=0;i<users.length;i++){
+				st_names[i].innerHTML = users[i];
+				
+			}
+		}
+		var st_names = document.querySelectorAll(".st_name");
+		var users = [];
+		function checkUser(user_name){
+			for(var i=0;i<users.length;i++){
+				if(users[i]==user_name){
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		function rv_ready(user_name){
+			var idx = checkUser(user_name);
+			
+			if(idx == -1){
+				users.push(user_name);
+			}
+			
+			
+			for(var i=0;i<users.length;i++){
+				st_names[i].innerHTML = users[i];
+				
+			}
+		}
+// 		fn_isdone
+		function fn_isdone(){
+			sock.send("isdone:"+users);
+		}
+		
+		
+		function fn_ready(){
+			var obj_it_name = document.querySelector("#it_name");
+			sock.send("ready:"+obj_it_name.value);
+		}
+	
+	</script>
+
+</head>
+<body onload="fn_init()">
+	<input type="text" id="it_name" style="width: 60px"  />
+	<input type="button" value="READY" onclick="fn_ready()" />
+	<input type="button" value="다됐슈" />
+	
+	<table border="1px" style="width: 200px">
+		<tr>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+		</tr>
+		<tr>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+		</tr>
+		<tr>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+		</tr>
+		<tr>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+		</tr>
+		<tr>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+			<td class="st_name">__</td>
+		</tr>	
+	</table>	
+	<input type="button" value="다됐냐" onclick="fn_isdone()"/>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

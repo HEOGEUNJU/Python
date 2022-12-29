@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pydev-testrun version="1.0"?><pydev-testsuite>
+    <summary errors="1" failures="0" finished="true" name="Test Run: 10" tests="0" total_time="Finished in: 0.00 secs."/>
+    <test location="D:\pyhon_workspace\HELLO_PYTHON\day01\test07.py" status="error" test="test07" time="0">
+        <stdout/>
+        <stderr><![CDATA[Traceback (most recent call last):
+  File "D:\pyhon_eclipse\plugins\org.python.pydev.core_10.0.1.202210281537\pysrc\_pydev_runfiles\pydev_runfiles.py", line 460, in __get_module_from_str
+    mod = __import__(modname)
+  File "D:/pyhon_workspace/HELLO_PYTHON/day01\test07.py", line 9
+    
+    ^
+SyntaxError: unexpected EOF while parsing
+ERROR: Module: test07 could not be imported (file: D:\pyhon_workspace\HELLO_PYTHON\day01\test07.py).
+]]></stderr>
+    </test>
+    <launch mode="run">
+        <launch_memento><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration local="true" path="HELLO_PYTHON test07.py"/>
+]]></launch_memento>
+    </launch>
+</pydev-testsuite>
